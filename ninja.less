@@ -29,11 +29,39 @@
   margin-right: auto;
 }
 
+// Webkit-style focus
+// ------------------
+.tab-focus() {
+  // Default
+  outline: thin dotted #333;
+  // Webkit
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
 // IE7 inline-block
 // -------------------------
 .ie7-inline-block() {
   *display: inline; /* IE7 inline-block hack */
   *zoom: 1;
+}
+
+// IE7 likes to collapse whitespace on either side of the inline-block elements.
+// Ems because we're attempting to match the width of a space character. Left
+// version is for form buttons, which typically come after other elements, and
+// right version is for icons, which come before. Applying both is ok, but it will
+// mean that space between those elements will be .6em (~2 space characters) in IE7,
+// instead of the 1 space in other browsers.
+.ie7-restore-left-whitespace() {
+  *margin-left: .3em;
+
+  &:first-child {
+    *margin-left: 0;
+  }
+}
+
+.ie7-restore-right-whitespace() {
+  *margin-right: .3em;
 }
 
 // Sizing shortcuts
@@ -63,7 +91,41 @@
   }
 }
 
+// Text overflow
+// -------------------------
+// Requires inline-block or block for proper styling
+.text-overflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
+// CSS image replacement
+// -------------------------
+// Source: https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+// Optional hyphenation
+.hyphens(@mode: auto) {
+  word-wrap: break-word;
+  -webkit-hyphens: @mode;
+     -moz-hyphens: @mode;
+      -ms-hyphens: @mode;
+       -o-hyphens: @mode;
+          hyphens: @mode;
+}
+
+// Resize anything
+.resizable(@direction) {
+  resize: @direction; // Options: horizontal, vertical, both
+  overflow: auto; // Safari fix
+}
 
 // FONTS
 // --------------------------------------------------
@@ -105,14 +167,6 @@
   }
   .typewriter(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
     #font > #family > .typewriter;
-    #font > .shorthand(@size, @weight, @lineHeight);
-  }
-  .caecilia(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
-    #font > #family > .caecilia;
-    #font > .shorthand(@size, @weight, @lineHeight);
-  }
-  .caecilia-roman(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
-    #font > #family > .caecilia-roman;
     #font > .shorthand(@size, @weight, @lineHeight);
   }
   .verdana(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
@@ -479,47 +533,56 @@
 
 
 
-// List
+// Flip an element
+// Can be used to flip images as well
+// -------------------------
 .flipHorizontal() {
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    filter: FlipH;
-    -ms-filter: "FlipH";
+       -moz-transform: scaleX(-1);
+         -o-transform: scaleX(-1);
+            transform: scaleX(-1);
+               filter: FlipH;
 }
 
 .flipVertical() {
-    -moz-transform: matrix(1, 0, 0, -1, 0, 0);
-    -o-transform: matrix(1, 0, 0, -1, 0, 0);
     -webkit-transform: matrix(1, 0, 0, -1, 0, 0);
-    transform: matrix(1, 0, 0, -1, 0, 0);
-    filter: FlipV;
-    -ms-filter: "FlipV";
+       -moz-transform: matrix(1, 0, 0, -1, 0, 0);
+         -o-transform: matrix(1, 0, 0, -1, 0, 0);
+            transform: matrix(1, 0, 0, -1, 0, 0);
+               filter: FlipV;
 }
 
-// css div to center of the parent div
+// Horizontal, Vertical center absolute positioned element
+// -------------------------
 .css-popup(@height, @width, @vPadding, @hPadding, @border: 0px) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
     .size(@height - @vPadding * 2, @width - @hPadding * 2);
     padding: @vPadding @hPadding;
     margin: -(@height/2 + @border) 0 0 -(@width/2 + @border);
 }
 
 
+// Photoshop drop shadow spread
+// -------------------------
 .drop-shadow-with-spread(@x-axis: 0, @y-axis: 1px, @blur: 2px, @spread: 0, @color) {
-  -webkit-box-shadow: @x-axis @y-axis @blur @spread @color;
-  -moz-box-shadow: @x-axis @y-axis @blur @spread @color;
-  box-shadow: @x-axis @y-axis @blur @spread @color;
+    -webkit-box-shadow: @x-axis @y-axis @blur @spread @color;
+    -moz-box-shadow: @x-axis @y-axis @blur @spread @color;
+    box-shadow: @x-axis @y-axis @blur @spread @color;
 }
- 
+
+// Photoshop drop shadow
+// -------------------------
 .ps-drop-shadow (@color: #fff, @angle: 0, @distance: 0, @spread: 0, @size: 0) {
-	@radians: ~`(180 - @{angle}) * Math.PI / 180`;
-  @h-shadow: ~`Math.round( Math.cos( @{radians} ) * @{distance} ) + 'px'`; 
-  @v-shadow: ~`Math.round( Math.sin( @{radians} ) * @{distance} ) + 'px'`; 
-  @spread_tmp: @size * @spread / 100;
-	@css-spread: ~`Math.round( @{spread_tmp} ) + 'px'`;
-  @blur: ~`Math.round( (@{size} - @{spread_tmp}) ) + 'px'`;
- 
-  .drop-shadow-with-spread(@h-shadow, @v-shadow, @blur, @css-spread, @color);
+    @radians: ~`(180 - @{angle}) * Math.PI / 180`;
+    @h-shadow: ~`Math.round( Math.cos( @{radians} ) * @{distance} ) + 'px'`; 
+    @v-shadow: ~`Math.round( Math.sin( @{radians} ) * @{distance} ) + 'px'`; 
+    @spread_tmp: @size * @spread / 100;
+    @css-spread: ~`Math.round( @{spread_tmp} ) + 'px'`;
+    @blur: ~`Math.round( (@{size} - @{spread_tmp}) ) + 'px'`;
+
+    .drop-shadow-with-spread(@h-shadow, @v-shadow, @blur, @css-spread, @color);
 }
 
