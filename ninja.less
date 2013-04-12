@@ -71,8 +71,17 @@
   height: @height;
 }
 
+// Alternate to size 
+// this mixin puts width as first parameter 
+// I think this makes as most of the dimesion we see are W x H
+.dimension(@width: 5px, @height: 5px) {
+  width: @width;
+  height: @height;
+
+}
+
 .square(@size: 5px) {
-  .size(@size, @size);
+  .dimension(@size, @size);
 }
 
 .rounded-square(@size, @radius: 5px) {
@@ -586,3 +595,13 @@
     .drop-shadow-with-spread(@h-shadow, @v-shadow, @blur, @css-spread, @color);
 }
 
+// Text Emboss
+// refer http://blainsmith.tumblr.com/post/437095195/embossed-text-with-css3
+
+.text-emboss-light-bg () {
+    text-shadow: 0px 1px 0px #ffffff;
+}
+
+.text-emboss-dark-bg () {
+    text-shadow: 0px -1px 0px #374683;
+}
