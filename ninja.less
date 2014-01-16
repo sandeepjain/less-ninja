@@ -506,37 +506,37 @@
 // -------------------------
 // For tipsies and popovers
 #popoverArrow {
-  .bottom(@arrowWidth: 5px,@color: red, @offset: 0) {
+  .bottom(@arrowWidth: 5px,@arrowHeight: 5px,@color: #000, @offset: 0) {
     bottom: @offset;
     left: 50%;
     margin-left: -@arrowWidth;
     border-left: @arrowWidth solid transparent;
     border-right: @arrowWidth solid transparent;
-    border-top: @arrowWidth solid @color;
+    border-top: @arrowHeight solid @color;
   }
-  .right(@arrowWidth: 5px,@color: red,@offset:0) {
+  .right(@arrowWidth: 5px,@arrowHeight: 5px,@color: #000,@offset:0) {
     top: 50%;
     right: @offset;
     margin-top: -@arrowWidth;
     border-top: @arrowWidth solid transparent;
     border-bottom: @arrowWidth solid transparent;
-    border-left: @arrowWidth solid @color;
+    border-left: @arrowHeight solid @color;
   }
-  .top(@arrowWidth: 5px,@color: red,@offset:0) {
+  .top(@arrowWidth: 5px,@arrowHeight: 5px,@color: #000,@offset:0) {
     top: @offset;
     left: 50%;
     margin-left: -@arrowWidth;
     border-left: @arrowWidth solid transparent;
     border-right: @arrowWidth solid transparent;
-    border-bottom: @arrowWidth solid @color;
+    border-bottom: @arrowHeight solid @color;
   }
-  .left(@arrowWidth: 5px,@color: red,@offset:0) {
+  .left(@arrowWidth: 5px,@arrowHeight: 5px,@color: #000,@offset:0) {
     top: 50%;
     left: @offset;
     margin-top: -@arrowWidth;
     border-top: @arrowWidth solid transparent;
     border-bottom: @arrowWidth solid transparent;
-    border-right: @arrowWidth solid @color;
+    border-right: @arrowHeight solid @color;
   }
 }
 
